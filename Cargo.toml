@@ -1,0 +1,54 @@
+[package]
+name = "candle-utils"
+
+# Match candle package info
+version = "0.9.1"
+edition = "2021"
+description = "Minimalist ML framework."
+repository = "https://github.com/matthewhaynesonline/candle-utils"
+keywords = ["blas", "tensor", "machine-learning"]
+categories = ["science"]
+license = "MIT OR Apache-2.0"
+
+readme = "README.md"
+
+[dependencies]
+candle-core = { git = "https://github.com/huggingface/candle.git", version = "0.9.1" }
+candle-flash-attn = { git = "https://github.com/huggingface/candle.git", version = "0.9.1", optional = true }
+candle-nn = { git = "https://github.com/huggingface/candle.git", version = "0.9.1" }
+candle-transformers = { git = "https://github.com/huggingface/candle.git", version = "0.9.1" }
+hf-hub = "0.4.1"
+serde = { version = "1.0.171", features = ["derive"] }
+serde_json = "1.0.99"
+tokenizers = { version = "0.21.0", features = ["onig"] }
+
+[dev-dependencies]
+clap = { version = "4.2.4", features = ["derive"] }
+tracing = "0.1.37"
+tracing-chrome = "0.7.1"
+tracing-subscriber = "0.3.7"
+
+[features]
+default = []
+# accelerate = [
+#   "dep:accelerate-src",
+#   "candle-core/accelerate",
+#   "candle-nn/accelerate",
+#   "candle-transformers/accelerate",
+# ]
+cuda = ["candle-core/cuda", "candle-nn/cuda", "candle-transformers/cuda"]
+cudnn = ["candle-core/cudnn", "candle-nn/cudnn", "candle-transformers/cudnn"]
+flash-attn = ["cuda", "candle-transformers/flash-attn", "dep:candle-flash-attn"]
+# mkl = [
+#   "dep:intel-mkl-src",
+#   "candle-core/mkl",
+#   "candle-nn/mkl",
+#   "candle-transformers/mkl",
+# ]
+# nccl = ["cuda", "cudarc/nccl", "dep:half"]
+# onnx = ["candle-onnx"]
+metal = ["candle-core/metal", "candle-nn/metal"]
+
+[[example]]
+name = "bert"
+path = "examples/bert/main.rs"
